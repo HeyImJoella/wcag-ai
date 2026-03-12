@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wintersport Paklijst</title>
+  <title>WCAG 2.2 & AI — Alle 86 succescriteria</title>
   <link rel="stylesheet" href="tokens.css">
   <style>
     /* ── Font faces ── */
@@ -117,261 +117,327 @@
       font-size: var(--body-size-lg);
       line-height: var(--font-body-lg-line-height);
       color: var(--color-neutral-300);
-      max-width: 520px;
-      margin: 0 auto var(--spacing-lg);
-    }
-
-    /* ── Progress bar ── */
-    .progress-bar-container {
-      max-width: 400px;
+      max-width: 560px;
       margin: 0 auto;
     }
 
-    .progress-stats {
+    /* ── Stat bar in hero ── */
+    .stat-bar {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-xl);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-family-heading);
+      font-size: var(--heading-size-md);
+      line-height: var(--font-heading-md-line-height);
+      font-weight: var(--font-weight-regular);
+    }
+
+    .stat-number.green { color: var(--color-green-300); }
+    .stat-number.red { color: var(--color-red-300); }
+    .stat-number.yellow { color: var(--color-yellow-300); }
+
+    .stat-label {
       font-size: var(--body-size-sm);
-      color: var(--color-neutral-400);
-      margin-bottom: var(--spacing-2xs);
+      color: var(--color-neutral-200);
+      margin-top: var(--spacing-3xs);
     }
 
-    .progress-stats .count {
-      color: var(--color-neutral-0);
-      font-weight: var(--font-weight-semibold);
-    }
-
-    .progress-track {
-      height: 6px;
-      background: var(--color-neutral-800);
-      border-radius: var(--radius-circular);
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--color-brand-500), var(--color-brand-300));
-      border-radius: var(--radius-circular);
-      width: 0%;
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    .stat-sub {
+      font-size: var(--body-size-xs);
+      color: var(--color-neutral-300);
+      margin-top: var(--spacing-4xs);
     }
 
     /* ── Container ── */
     .container {
-      max-width: var(--layout-container-max-width);
+      max-width: 960px;
       margin: 0 auto;
       padding: var(--spacing-xl) var(--layout-container-padding);
     }
 
-    /* ── Category ── */
-    .category {
-      margin-bottom: var(--spacing-lg);
-    }
-
-    .category-header {
+    /* ── Legend ── */
+    .legend {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--spacing-sm) 0;
-      border-bottom: var(--border-width-sm) solid var(--border-neutral-2);
-      cursor: pointer;
-      user-select: none;
-      transition: border-color 0.2s;
-    }
-
-    .category-header:hover {
-      border-color: var(--border-neutral-3);
-    }
-
-    .category-header-left {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-    }
-
-    .category-icon {
-      font-size: 24px;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
       justify-content: center;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-sm) var(--spacing-md);
       background: var(--surface-neutral-1);
-      border-radius: var(--radius-md);
-      flex-shrink: 0;
+      border-radius: var(--radius-circular);
+      border: var(--border-width-sm) solid var(--border-neutral-2);
     }
 
-    .category-title {
-      font-family: var(--font-family-heading);
-      font-size: var(--heading-size-xs);
-      font-weight: var(--font-weight-medium);
-    }
-
-    .category-count {
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2xs);
       font-size: var(--body-size-sm);
-      color: var(--content-2);
-      font-weight: var(--font-weight-regular);
-      margin-left: var(--spacing-2xs);
+      color: var(--content-1);
     }
 
-    .category-chevron {
-      width: 20px;
-      height: 20px;
-      color: var(--content-2);
-      transition: transform 0.3s ease;
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-circular);
       flex-shrink: 0;
     }
 
-    .category.open .category-chevron {
-      transform: rotate(180deg);
-    }
+    .legend-dot.green { background: var(--color-green-400); }
+    .legend-dot.yellow { background: var(--color-yellow-400); }
+    .legend-dot.red { background: var(--color-red-400); }
 
-    /* ── Item list ── */
-    .category-items {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.35s ease;
-    }
-
-    .category.open .category-items {
-      grid-template-rows: 1fr;
-    }
-
-    .category-items-inner {
-      overflow: hidden;
-    }
-
-    .item {
+    /* ── Filter buttons ── */
+    .filters {
       display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border-bottom: var(--border-width-sm) solid var(--border-neutral-1);
-      transition: background 0.15s;
-    }
-
-    .item:hover {
-      background: var(--surface-neutral-1);
-    }
-
-    .item:last-child {
-      border-bottom: none;
-    }
-
-    /* ── Custom checkbox ── */
-    .checkbox {
-      position: relative;
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-
-    .checkbox input {
-      position: absolute;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-      margin: 0;
-    }
-
-    .checkbox .checkmark {
-      width: 22px;
-      height: 22px;
-      border: var(--border-width-md) solid var(--border-component-neutral-default);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
-      background: var(--surface-neutral-base);
-    }
-
-    .checkbox input:checked + .checkmark {
-      background: var(--surface-primary-default);
-      border-color: var(--surface-primary-default);
-    }
-
-    .checkbox .checkmark svg {
-      opacity: 0;
-      transform: scale(0.5);
-      transition: all 0.2s ease;
-    }
-
-    .checkbox input:checked + .checkmark svg {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .checkbox input:focus-visible + .checkmark {
-      outline: 2px solid var(--border-brand-primary);
-      outline-offset: 2px;
-    }
-
-    .item-label {
-      flex: 1;
-      font-size: var(--body-size-md);
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-
-    .item.checked .item-label {
-      color: var(--content-2);
-      text-decoration: line-through;
-      text-decoration-color: var(--border-neutral-3);
-    }
-
-    .item-note {
-      font-size: var(--body-size-xs);
-      color: var(--content-2);
-      font-style: italic;
-      white-space: nowrap;
-    }
-
-    /* ── Actions bar ── */
-    .actions {
-      display: flex;
-      gap: var(--spacing-xs);
-      justify-content: center;
-      padding: var(--spacing-lg) 0 var(--spacing-xl);
+      gap: var(--spacing-2xs);
+      margin-bottom: var(--spacing-xl);
       flex-wrap: wrap;
     }
 
-    .btn {
+    .filter-btn {
       font-family: var(--font-family-body);
       font-size: var(--body-size-sm);
       font-weight: var(--font-weight-medium);
-      padding: var(--spacing-xs) var(--spacing-md);
+      padding: var(--spacing-2xs) var(--spacing-sm);
       border-radius: var(--radius-circular);
       border: var(--border-width-sm) solid var(--border-neutral-2);
       background: var(--surface-neutral-base);
-      color: var(--content-base);
+      color: var(--content-1);
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .btn:hover {
+    .filter-btn:hover {
       background: var(--surface-neutral-1);
       border-color: var(--border-neutral-3);
     }
 
-    .btn-primary {
+    .filter-btn.active {
       background: var(--surface-secondary-default);
       color: var(--content-inverse);
       border-color: var(--surface-secondary-default);
     }
 
-    .btn-primary:hover {
-      background: var(--surface-secondary-hover);
-      border-color: var(--surface-secondary-hover);
+    /* ── Principle sections ── */
+    .principle {
+      margin-bottom: var(--spacing-2xl);
     }
 
-    .btn-danger {
-      color: var(--content-component-states-danger);
-      border-color: var(--border-component-states-danger);
+    .principle-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-sm);
+      border-bottom: var(--border-width-md) solid var(--border-neutral-2);
     }
 
-    .btn-danger:hover {
-      background: var(--surface-states-danger);
+    .principle-number {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--body-size-sm);
+      background: var(--surface-primary-2);
+      color: var(--content-brand);
+      flex-shrink: 0;
+    }
+
+    .principle-title {
+      font-family: var(--font-family-heading);
+      font-size: var(--heading-size-sm);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .principle-count {
+      font-size: var(--body-size-sm);
+      color: var(--content-2);
+      margin-left: auto;
+    }
+
+    /* ── Criterion items ── */
+    .criteria-list {
+      list-style: none;
+    }
+
+    .criterion {
+      display: flex;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-bottom: var(--border-width-sm) solid var(--border-neutral-1);
+      align-items: flex-start;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-radius: var(--radius-sm);
+    }
+
+    .criterion:hover {
+      background: var(--surface-neutral-1);
+    }
+
+    .criterion:last-child {
+      border-bottom: none;
+    }
+
+    .criterion-status {
+      flex-shrink: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-circular);
+      margin-top: 7px;
+    }
+
+    .criterion-status.can { background: var(--color-green-400); }
+    .criterion-status.partial { background: var(--color-yellow-400); }
+    .criterion-status.cannot { background: var(--color-red-400); }
+
+    .criterion-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .criterion-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-2xs);
+      flex-wrap: wrap;
+    }
+
+    .criterion-id {
+      font-family: var(--font-family-mono);
+      font-size: var(--body-size-xs);
+      color: var(--content-base);
+      font-weight: var(--font-weight-medium);
+      flex-shrink: 0;
+    }
+
+    .criterion-name {
+      font-weight: var(--font-weight-medium);
+      font-size: var(--body-size-md);
+    }
+
+    .criterion-level {
+      font-size: var(--body-size-xs);
+      color: var(--content-2);
+      background: var(--surface-neutral-2);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    /* ── Expandable detail ── */
+    .criterion-detail {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease;
+    }
+
+    .criterion.open .criterion-detail {
+      grid-template-rows: 1fr;
+    }
+
+    .criterion-detail-inner {
+      overflow: hidden;
+    }
+
+    .criterion-desc {
+      font-size: var(--body-size-sm);
+      color: var(--content-1);
+      line-height: var(--font-body-sm-line-height);
+      margin-top: var(--spacing-2xs);
+      padding: var(--spacing-2xs) 0;
+    }
+
+    .criterion-chevron {
+      width: 16px;
+      height: 16px;
+      color: var(--content-2);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .criterion.open .criterion-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* ── Takeaway section ── */
+    .takeaway {
+      background: var(--color-neutral-950);
+      color: var(--color-neutral-0);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-2xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .takeaway::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, var(--color-brand-800) 0%, transparent 60%);
+      opacity: 0.3;
+    }
+
+    .takeaway-content {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+    }
+
+    .takeaway h2 {
+      font-family: var(--font-family-heading);
+      font-size: var(--heading-size-sm);
+      font-weight: var(--font-weight-medium);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .takeaway p {
+      font-size: var(--body-size-md);
+      line-height: var(--font-body-md-line-height);
+      color: var(--color-neutral-300);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .takeaway p:last-child { margin-bottom: 0; }
+    .takeaway strong { color: var(--color-neutral-0); }
+
+    .spectrum {
+      margin: var(--spacing-lg) 0 0;
+    }
+
+    .spectrum-bar {
+      height: 8px;
+      border-radius: var(--radius-circular);
+      background: linear-gradient(90deg,
+        var(--color-green-400) 0%,
+        var(--color-green-400) 10%,
+        var(--color-yellow-400) 39%,
+        var(--color-red-400) 60%,
+        var(--color-red-400) 100%
+      );
+      margin-bottom: var(--spacing-2xs);
+    }
+
+    .spectrum-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--body-size-xs);
+      color: var(--color-neutral-400);
     }
 
     /* ── Footer ── */
@@ -383,19 +449,105 @@
       font-size: var(--body-size-sm);
     }
 
-    /* ── Confetti overlay ── */
-    .confetti-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1000;
+    footer a {
+      color: var(--content-link);
+      text-decoration: none;
     }
 
+    footer a:hover { text-decoration: underline; }
+
     /* ── Responsive ── */
+    /* ── Search bar ── */
+    .search-bar {
+      margin-bottom: var(--spacing-md);
+    }
+    .search-bar input {
+      width: 100%;
+      padding: var(--spacing-sm) var(--spacing-md);
+      padding-left: 2.5rem;
+      border: 1px solid var(--border-color-neutral-default, #d0d0d0);
+      border-radius: var(--radius-md);
+      font-family: "Anthropic Sans Text", system-ui, sans-serif;
+      font-size: var(--font-body-md-size, 1rem);
+      background: var(--surface-color-neutral-base, #fff);
+      color: var(--content-color-base, #1a1a1a);
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+    }
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--surface-color-secondary-default, #da7756);
+      box-shadow: 0 0 0 3px rgba(218, 119, 86, 0.15);
+    }
+    .search-bar input::placeholder {
+      color: var(--content-color-2, #888);
+    }
+    .search-wrapper {
+      position: relative;
+    }
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1rem;
+      height: 1rem;
+      color: var(--content-color-2, #888);
+      pointer-events: none;
+    }
+
+    /* ── Level filter ── */
+    .level-filters {
+      display: flex;
+      gap: var(--spacing-xs);
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-lg);
+    }
+    .level-btn {
+      padding: var(--spacing-2xs) var(--spacing-sm);
+      border: 1px solid var(--border-color-neutral-default, #d0d0d0);
+      border-radius: var(--radius-full, 100px);
+      background: var(--surface-color-neutral-base, #fff);
+      color: var(--content-color-1, #444);
+      font-family: "Anthropic Sans Text", system-ui, sans-serif;
+      font-size: var(--font-body-sm-size, 0.875rem);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .level-btn:hover {
+      border-color: var(--surface-color-secondary-default, #da7756);
+      color: var(--surface-color-secondary-default, #da7756);
+    }
+    .level-btn.active {
+      background: var(--surface-color-secondary-default, #da7756);
+      border-color: var(--surface-color-secondary-default, #da7756);
+      color: #fff;
+    }
+
+    /* ── Deep link highlight ── */
+    .criterion.highlighted {
+      animation: highlight-fade 2s ease-out;
+    }
+    @keyframes highlight-fade {
+      0% { background: rgba(218, 119, 86, 0.2); }
+      100% { background: transparent; }
+    }
+
+    /* ── No results ── */
+    .no-results {
+      text-align: center;
+      padding: var(--spacing-2xl) var(--spacing-md);
+      color: var(--content-color-2, #888);
+      font-size: var(--font-body-md-size, 1rem);
+    }
+
     @media (max-width: 767px) {
       .hero { padding: var(--spacing-3xl) var(--layout-container-padding) var(--spacing-xl); }
       .hero h1 { font-size: var(--heading-size-lg); line-height: var(--font-heading-lg-line-height); }
-      .item-note { display: none; }
+      .stat-bar { gap: var(--spacing-lg); }
+      .stat-number { font-size: var(--heading-size-xs); }
+      .criterion-level { display: none; }
+      .principle-count { display: none; }
     }
   </style>
 </head>
@@ -404,369 +556,590 @@
   <!-- Hero -->
   <header class="hero">
     <div class="hero-content">
-      <div class="hero-badge">Paklijst 2026</div>
-      <h1>Wintersport Paklijst</h1>
-      <p>Alles wat je nodig hebt voor een perfecte skivakantie. Vink af wat je hebt ingepakt.</p>
-      <div class="progress-bar-container">
-        <div class="progress-stats">
-          <span><span class="count" id="checked-count">0</span> ingepakt</span>
-          <span id="progress-pct">0%</span>
+      <div class="hero-badge">WCAG 2.2 &middot; 86 criteria</div>
+      <h1>Wat kan AI controleren in WCAG?</h1>
+      <p>Een compleet overzicht van alle 86 WCAG 2.2 succescriteria en of AI-tools hun toetsing kunnen automatiseren.</p>
+      <div class="stat-bar">
+        <div class="stat">
+          <div class="stat-number green">9</div>
+          <div class="stat-label">Volledig automatiseerbaar</div>
+          <div class="stat-sub">10% van alle criteria</div>
         </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
+        <div class="stat">
+          <div class="stat-number yellow">25</div>
+          <div class="stat-label">Gedeeltelijk automatiseerbaar</div>
+          <div class="stat-sub">29% van alle criteria</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number red">52</div>
+          <div class="stat-label">Menselijke beoordeling vereist</div>
+          <div class="stat-sub">60% van alle criteria</div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Main -->
   <main class="container">
 
-    <!-- Actions -->
-    <div class="actions">
-      <button class="btn btn-primary" onclick="toggleAll(true)">Alles aanvinken</button>
-      <button class="btn" onclick="expandAll()">Alles uitklappen</button>
-      <button class="btn" onclick="collapseAll()">Alles inklappen</button>
-      <button class="btn btn-danger" onclick="toggleAll(false)">Alles resetten</button>
+    <!-- Legend -->
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot green"></span> Volledig automatiseerbaar</span>
+      <span class="legend-item"><span class="legend-dot yellow"></span> Gedeeltelijk automatiseerbaar</span>
+      <span class="legend-item"><span class="legend-dot red"></span> Menselijke beoordeling vereist</span>
     </div>
 
-    <!-- Categories filled by JS -->
-    <div id="categories"></div>
+    <!-- Search -->
+    <div class="search-bar">
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"/>
+        </svg>
+        <input type="search" id="search-input" placeholder="Zoek op criterium, naam of beschrijving..." aria-label="Zoek criteria">
+      </div>
+    </div>
+
+    <!-- Level filter -->
+    <div class="level-filters">
+      <button class="level-btn active" onclick="filterLevel('all')">Alle levels</button>
+      <button class="level-btn" onclick="filterLevel('A')">A</button>
+      <button class="level-btn" onclick="filterLevel('AA')">AA</button>
+      <button class="level-btn" onclick="filterLevel('AAA')">AAA</button>
+    </div>
+
+    <!-- Status filters -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterCriteria('all')">Alle 86</button>
+      <button class="filter-btn" onclick="filterCriteria('can')">Volledig automatiseerbaar (9)</button>
+      <button class="filter-btn" onclick="filterCriteria('partial')">Gedeeltelijk (25)</button>
+      <button class="filter-btn" onclick="filterCriteria('cannot')">Menselijk vereist (52)</button>
+    </div>
+
+    <!-- Criteria by principle -->
+    <div id="principles"></div>
+
+    <!-- Conclusie -->
+    <div class="takeaway">
+      <div class="takeaway-content">
+        <h2>De conclusie</h2>
+        <p>Slechts <strong>10% van de WCAG 2.2 criteria</strong> (9 van de 86) kan volledig gecontroleerd worden door geautomatiseerde tools. Nog eens 29% kan gedeeltelijk worden gesignaleerd, maar vereist nog steeds menselijke verificatie.</p>
+        <p>Dat betekent dat <strong>60% van alle succescriteria menselijk oordeelsvermogen vereist</strong>: handmatige toetsenbordtesten, screenreader-doorlopen, cognitieve beoordeling en testen met echte gebruikers met een beperking.</p>
+        <p>AI is een <strong>essenti&euml;le eerste verdedigingslinie</strong> voor het opsporen van het voor de hand liggende. Maar volledige WCAG-naleving vereist een <strong>gelaagde strategie</strong>: geautomatiseerde scans in CI/CD, aangevuld met gestructureerde handmatige audits.</p>
+        <div class="spectrum">
+          <div class="spectrum-bar"></div>
+          <div class="spectrum-labels">
+            <span>10% volledig auto</span>
+            <span>29% gedeeltelijk</span>
+            <span>60% menselijk oordeel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <footer>
-    Fijne wintersport! Vergeet je zonnebrand niet.
+    Gebaseerd op WCAG 2.2 (86 succescriteria). Zie de volledige specificatie op <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">w3.org/TR/WCAG22</a>.
   </footer>
 
-  <canvas class="confetti-overlay" id="confetti-canvas"></canvas>
-
   <script>
-    // ── Data ──
-    const packingData = [
+    // Alle 86 WCAG 2.2 succescriteria
+    // status: "can" = volledig automatiseerbaar, "partial" = gedeeltelijk, "cannot" = menselijke beoordeling vereist
+    const principles = [
       {
-        icon: "&#9971;",
-        title: "Ski- & snowboardkleding",
-        items: [
-          { name: "Skibroek", note: "waterdicht" },
-          { name: "Ski-jas", note: "waterdicht & ademend" },
-          { name: "Fleece vest / midlayer" },
-          { name: "Thermisch ondergoed boven", note: "merino of synthetisch" },
-          { name: "Thermisch ondergoed onder" },
-          { name: "Skisokken", note: "2-3 paar" },
-          { name: "Skihandschoenen" },
-          { name: "Dunne liner handschoenen" },
-          { name: "Skimuts / beanie" },
-          { name: "Nekwarmer / buff" },
-          { name: "Skihelm" },
-          { name: "Skibril / goggles" },
+        number: "1",
+        title: "Waarneembaar",
+        criteria: [
+          {
+            id: "1.1.1", name: "Niet-tekstuele content", level: "A", status: "partial",
+            desc: "Hoe: Tools zoals axe-core en Lighthouse scannen de DOM op &lt;img&gt;-elementen zonder alt-attribuut en signaleren lege alt-teksten op niet-decoratieve afbeeldingen. Waarom gedeeltelijk: AI kan ontbrekende alt-attributen detecteren, maar kan niet beoordelen of de alt-tekst de afbeelding inhoudelijk juist beschrijft. Een decoratieve afbeelding heeft alt=\"\" nodig, een informatieve afbeelding een nuttige beschrijving \u2014 alleen een mens kan dat onderscheid maken."
+          },
+          {
+            id: "1.2.1", name: "Alleen audio en alleen video (vooraf opgenomen)", level: "A", status: "cannot",
+            desc: "Vereist verificatie dat tekstalternatieven of audiotracks worden aangeboden voor media-inhoud. AI kan niet beoordelen of die alternatieven de media nauwkeurig en volledig weergeven."
+          },
+          {
+            id: "1.2.2", name: "Ondertiteling (vooraf opgenomen)", level: "A", status: "partial",
+            desc: "Hoe: Geautomatiseerde tools kunnen &lt;video&gt;- en &lt;audio&gt;-elementen inspecteren op de aanwezigheid van &lt;track kind=\"captions\"&gt;-elementen. Waarom gedeeltelijk: AI kan detecteren of een ondertitelingstrack bestaat, maar kan niet verifi\u00ebren of ondertitels nauwkeurig, correct gesynchroniseerd zijn en alle gesproken dialoog en betekenisvolle geluiden bevatten."
+          },
+          {
+            id: "1.2.3", name: "Audiodescriptie of media-alternatief", level: "A", status: "cannot",
+            desc: "Vereist controle dat visuele informatie in video wordt overgebracht via audiodescriptie of een tekstalternatief. AI kan niet evalueren of de beschrijving volledig en contextueel passend is."
+          },
+          {
+            id: "1.2.4", name: "Ondertiteling (live)", level: "AA", status: "cannot",
+            desc: "Live ondertiteling vereist real-time nauwkeurigheidsbeoordeling. AI kan niet verifi\u00ebren of live ondertitelingsdiensten adequaat presteren tijdens een live-uitzending."
+          },
+          {
+            id: "1.2.5", name: "Audiodescriptie (vooraf opgenomen)", level: "AA", status: "cannot",
+            desc: "Vereist dat audiodescriptie wordt aangeboden voor alle vooraf opgenomen video. AI kan niet evalueren of beschrijvingen de visuele informatie adequaat overbrengen voor blinde gebruikers."
+          },
+          {
+            id: "1.2.6", name: "Gebarentaal (vooraf opgenomen)", level: "AAA", status: "cannot",
+            desc: "Vereist gebarentaalvertolking voor vooraf opgenomen audio-inhoud. AI kan de aanwezigheid, kwaliteit of nauwkeurigheid van gebarentaalvertolking in video niet verifi\u00ebren."
+          },
+          {
+            id: "1.2.7", name: "Verlengde audiodescriptie", level: "AAA", status: "cannot",
+            desc: "Wanneer pauzes in de voorgrondaudio te kort zijn voor audiodescripties, pauzeren verlengde beschrijvingen de video. AI kan niet beoordelen wanneer dit nodig is of wanneer beschrijvingen adequaat zijn."
+          },
+          {
+            id: "1.2.8", name: "Media-alternatief (vooraf opgenomen)", level: "AAA", status: "cannot",
+            desc: "Vereist een volledig tekstalternatief voor alle vooraf opgenomen gesynchroniseerde media. AI kan niet verifi\u00ebren of het tekstequivalent dezelfde informatie overbrengt als de multimediapresentatie."
+          },
+          {
+            id: "1.2.9", name: "Alleen audio (live)", level: "AAA", status: "cannot",
+            desc: "Vereist een tekstalternatief voor live audio-inhoud. AI kan de nauwkeurigheid of volledigheid van real-time transcriptie niet beoordelen."
+          },
+          {
+            id: "1.3.1", name: "Info en relaties", level: "A", status: "partial",
+            desc: "Hoe: axe-core valideert kopnesting (h1\u2192h2\u2192h3), controleert &lt;label&gt;-koppelingen met formulierinvoer, verifieert &lt;th&gt;/scope op datatabellen en signaleert &lt;fieldset&gt;/&lt;legend&gt;-gebruik. Waarom gedeeltelijk: AI kan structurele elementen controleren, maar kan niet verifi\u00ebren of alle visuele relaties (bijv. gegroepeerde content, visuele nadruk) correct in code zijn weergegeven."
+          },
+          {
+            id: "1.3.2", name: "Betekenisvolle volgorde", level: "A", status: "cannot",
+            desc: "Vereist dat de DOM-leesvolgorde overeenkomt met de bedoelde visuele volgorde. AI kan de DOM-volgorde vergelijken met lay-outposities, maar kan niet begrijpen of de volgorde daadwerkelijk betekenisvol is voor een gebruiker."
+          },
+          {
+            id: "1.3.3", name: "Zintuiglijke kenmerken", level: "A", status: "cannot",
+            desc: "Instructies mogen niet uitsluitend afhankelijk zijn van zintuiglijke kenmerken zoals vorm, kleur, grootte of locatie (bijv. \u201Cklik op de ronde knop\u201D). AI kan instructies in natuurlijke taal niet goed genoeg begrijpen om dit betrouwbaar te detecteren."
+          },
+          {
+            id: "1.3.4", name: "Ori\u00ebntatie", level: "AA", status: "partial",
+            desc: "Hoe: axe-core\u2019s css-orientation-lock-regel scant CSS op ori\u00ebntatiebeperkende media queries en meta-viewport-attributen die het scherm vergrendelen op staand of liggend. Waarom gedeeltelijk: het detecteren van ori\u00ebntatievergrendeling is geautomatiseerd, maar verifi\u00ebren dat content correct wordt weergegeven en bruikbaar blijft in beide ori\u00ebntaties vereist visuele en functionele tests."
+          },
+          {
+            id: "1.3.5", name: "Identificeer invoerdoel", level: "AA", status: "can",
+            desc: "Hoe: axe-core en Lighthouse controleren formulierinvoer aan de hand van de WCAG-lijst met invoerdoelen en verifi\u00ebren dat autocomplete-attributen overeenkomen met geldige HTML-waarden (bijv. autocomplete=\"given-name\", autocomplete=\"email\"). De controle koppelt invoertypen aan de 53 vooraf gedefinieerde autocomplete-tokens."
+          },
+          {
+            id: "1.3.6", name: "Identificeer doel", level: "AAA", status: "cannot",
+            desc: "Vereist dat het doel van UI-componenten, iconen en regio\u2019s programmatisch bepaald kan worden. AI kan niet volledig beoordelen of landmarkrollen, iconen en componenten een contextueel passend semantisch doel hebben gekregen."
+          },
+          {
+            id: "1.4.1", name: "Gebruik van kleur", level: "A", status: "cannot",
+            desc: "Kleur mag niet het enige visuele middel zijn om informatie over te brengen (bijv. rood = fout). AI kan niet betrouwbaar bepalen of kleur het enige onderscheidende kenmerk is, omdat dit begrip van de context van informatiepresentatie vereist."
+          },
+          {
+            id: "1.4.2", name: "Audiobediening", level: "A", status: "cannot",
+            desc: "Als audio automatisch langer dan 3 seconden afspeelt, moet een mechanisme bestaan om te pauzeren of het volume te regelen. AI kan gedeeltelijk autoplay-attributen detecteren, maar kan niet verifi\u00ebren of het mechanisme in alle interactieve scenario\u2019s werkt."
+          },
+          {
+            id: "1.4.3", name: "Contrast (minimum)", level: "AA", status: "can",
+            desc: "Hoe: Tools berekenen de relatieve luminantie van voorgrond- en achtergrondkleuren met de WCAG-formule en vergelijken de verhouding met 4,5:1 (normale tekst) of 3:1 (grote tekst, 18px+ of 14px+ vet). axe-core, Lighthouse en WAVE voeren deze controle automatisch uit door berekende stijlen in de DOM te doorlopen."
+          },
+          {
+            id: "1.4.4", name: "Tekstgrootte aanpassen", level: "AA", status: "partial",
+            desc: "Hoe: axe-core controleert de &lt;meta name=\"viewport\"&gt;-tag op user-scalable=no en maximum-scale&lt;2 beperkingen. Lighthouse signaleert zoom-blokkerende viewport-instellingen. Waarom gedeeltelijk: deze controles vangen de meest voorkomende overtreding op, maar volledig testen dat content bruikbaar blijft bij 200% browserzoom zonder overflow of afknippen vereist visuele verificatie."
+          },
+          {
+            id: "1.4.5", name: "Afbeeldingen van tekst", level: "AA", status: "partial",
+            desc: "Hoe: AI-gebaseerde OCR (Tesseract, Google Vision API) kan &lt;img&gt;-elementen scannen om tekst te detecteren die als afbeelding is weergegeven in plaats van als HTML. CSS background-image-analyse kan ook mogelijke tekstafbeeldingen signaleren. Waarom gedeeltelijk: bepalen of een uitzondering van toepassing is (logo\u2019s, essenti\u00eble presentatie) vereist menselijk oordeel."
+          },
+          {
+            id: "1.4.6", name: "Contrast (verhoogd)", level: "AAA", status: "can",
+            desc: "Hoe: Dezelfde geautomatiseerde luminantieberekening als 1.4.3, maar met strengere drempels: 7:1 voor normale tekst en 4,5:1 voor grote tekst. axe-core, Lighthouse en Colour Contrast Analyser ondersteunen allemaal AAA-niveaucontrole. Configureer axe-regels om de verhoogde ratio te controleren."
+          },
+          {
+            id: "1.4.7", name: "Weinig of geen achtergrondaudio", level: "AAA", status: "cannot",
+            desc: "Vereist dat achtergrondaudio in spraakgebaseerde content afwezig is, uitgeschakeld kan worden, of minstens 20 dB lager is dan de voorgrond. Vereist audio-analyse en menselijke verificatie van audiomixing."
+          },
+          {
+            id: "1.4.8", name: "Visuele presentatie", level: "AAA", status: "partial",
+            desc: "Hoe: Geautomatiseerde CSS-analyse kan berekende stijlen controleren op regelbreedte (\u226480 tekens), regelhoogte (\u22651,5), alinea-afstand (\u22652x lettergrootte) en of tekst niet volledig uitgevuld is. Waarom gedeeltelijk: verifi\u00ebren dat gebruikers voorgrond-/achtergrondkleuren kunnen overschrijven en dat alle vijf subeisen worden vervuld vereist interactieve tests."
+          },
+          {
+            id: "1.4.9", name: "Afbeeldingen van tekst (geen uitzondering)", level: "AAA", status: "partial",
+            desc: "Hoe: Dezelfde OCR-gebaseerde detectie als 1.4.5 (Tesseract, Vision APIs) om tekst in afbeeldingen te vinden. Waarom gedeeltelijk: strenger dan 1.4.5 zonder uitzonderingen behalve pure decoratie. Bepalen of een afbeelding puur decoratief is vereist nog steeds menselijke beoordeling."
+          },
+          {
+            id: "1.4.10", name: "Reflow", level: "AA", status: "partial",
+            desc: "Hoe: Puppeteer of Playwright kan de viewport verkleinen naar 320px breedte (equivalent aan 1280px bij 400% zoom) en horizontale overflow detecteren via document.scrollingElement.scrollWidth > viewport-breedte. Waarom gedeeltelijk: geautomatiseerde viewport-aanpassing vangt overflow-problemen op, maar complexe lay-outs, overlappende content en interactieve componenten vereisen handmatige visuele verificatie."
+          },
+          {
+            id: "1.4.11", name: "Contrast van niet-tekstuele content", level: "AA", status: "partial",
+            desc: "Hoe: Tools zoals axe-core kunnen contrastverhoudingen controleren van UI-componentranden (invoervelden, knoppen) en focusindicatoren tegen hun achtergronden op de 3:1-drempel. Waarom gedeeltelijk: identificeren welke grafische objecten betekenisvol vs. decoratief zijn, en het controleren van aangepaste SVG/canvas-graphics, vereist menselijk oordeel."
+          },
+          {
+            id: "1.4.12", name: "Tekstafstand", level: "AA", status: "partial",
+            desc: "Hoe: Een bookmarklet of Puppeteer-script injecteert de vereiste CSS-overschrijvingen (line-height: 1.5, paragraph margin-bottom: 2em, letter-spacing: 0.12em, word-spacing: 0.16em) en controleert vervolgens op overflow: hidden afknippen of contentverlies. Waarom gedeeltelijk: geautomatiseerde afknipdetectie vangt de meeste problemen op, maar verifi\u00ebren dat tekst leesbaar blijft en er geen content verloren gaat vereist een menselijk oog."
+          },
+          {
+            id: "1.4.13", name: "Content bij hover of focus", level: "AA", status: "cannot",
+            desc: "Content die verschijnt bij hover of focus moet wegklikbaar, hoverbaar en persistent zijn. Dit vereist interactieve tests: hoverstaten activeren, Esc-wegklikken verifi\u00ebren en controleren dat de content zichtbaar blijft tijdens het hoveren."
+          }
         ]
       },
       {
-        icon: "&#128087;",
-        title: "Dagelijkse kleding",
-        items: [
-          { name: "Jeans / broeken", note: "2-3 stuks" },
-          { name: "Truien / sweaters", note: "3-4 stuks" },
-          { name: "T-shirts / tops", note: "4-5 stuks" },
-          { name: "Ondergoed", note: "voldoende voor de hele trip" },
-          { name: "Gewone sokken", note: "meerdere paar" },
-          { name: "Pyjama" },
-          { name: "Comfortabele after-ski broek", note: "jogger of legging" },
-          { name: "Warme vest / hoodie" },
-          { name: "Sjaal" },
-          { name: "Muts voor overdag" },
+        number: "2",
+        title: "Bedienbaar",
+        criteria: [
+          {
+            id: "2.1.1", name: "Toetsenbord", level: "A", status: "cannot",
+            desc: "Alle functionaliteit moet bedienbaar zijn via het toetsenbord. AI kan niet uitputtend testen of elk interactief element (aangepaste widgets, drag-and-drop, complexe menu\u2019s) volledig via het toetsenbord werkt."
+          },
+          {
+            id: "2.1.2", name: "Geen toetsenbordval", level: "A", status: "partial",
+            desc: "Hoe: Statische analyse kan focus-vastleggend JavaScript-patronen detecteren (bijv. Tab-lus zonder Esc-uitgang). Playwright/Puppeteer kan Tab-sequenties simuleren en detecteren of focus vastloopt. Waarom gedeeltelijk: verifi\u00ebren dat een gebruiker altijd weg kan navigeren van elk component, inclusief modals en aangepaste widgets, vereist echte toetsenbordinteractietests."
+          },
+          {
+            id: "2.1.3", name: "Toetsenbord (geen uitzondering)", level: "AAA", status: "cannot",
+            desc: "Strengere versie van 2.1.1: alle functionaliteit moet toetsenbordbedienbaar zijn zonder uitzonderingen. Vereist dezelfde uitgebreide handmatige toetsenbordtests op elk interactief element."
+          },
+          {
+            id: "2.1.4", name: "Tekentoetssnelkoppelingen", level: "A", status: "cannot",
+            desc: "Als sneltoetsen met \u00e9\u00e9n teken bestaan, moeten ze opnieuw toewijsbaar of uitschakelbaar zijn. AI kan niet betrouwbaar alle toetsenbord-eventlisteners en hun sneltoetsen detecteren, noch verifi\u00ebren of het hertoewijzingsmechanisme werkt."
+          },
+          {
+            id: "2.2.1", name: "Timing aanpasbaar", level: "A", status: "cannot",
+            desc: "Als tijdslimieten bestaan, moeten gebruikers deze kunnen uitschakelen, aanpassen of verlengen. AI kan niet alle time-outgedragingen in een applicatie ontdekken of verifi\u00ebren dat de verlengingsmechanismen correct werken."
+          },
+          {
+            id: "2.2.2", name: "Pauzeren, stoppen, verbergen", level: "A", status: "partial",
+            desc: "Hoe: Tools scannen op &lt;video autoplay&gt;, CSS-animaties met oneindige lussen en marquee-elementen. axe-core signaleert automatisch afspelende media zonder bedieningselementen. Waarom gedeeltelijk: het detecteren van automatisch afspelende content is eenvoudig, maar verifi\u00ebren dat pauzeer-/stop-/verbergbedieningselementen bestaan en correct functioneren voor alle geanimeerde content (JS-carousels, canvas-animaties) vereist interactietests."
+          },
+          {
+            id: "2.2.3", name: "Geen timing", level: "AAA", status: "cannot",
+            desc: "Timing mag geen essentieel onderdeel zijn van een activiteit (behalve real-time evenementen en tijdgebaseerde media). AI kan niet begrijpen of een tijdsbeperking essentieel is voor de content."
+          },
+          {
+            id: "2.2.4", name: "Onderbrekingen", level: "AAA", status: "cannot",
+            desc: "Gebruikers moeten onderbrekingen (meldingen, waarschuwingen) kunnen uitstellen of onderdrukken. AI kan niet alle mogelijke onderbrekingsbronnen identificeren of onderdrukkingsmechanismen verifi\u00ebren."
+          },
+          {
+            id: "2.2.5", name: "Herauthenticatie", level: "AAA", status: "cannot",
+            desc: "Wanneer een geauthenticeerde sessie verloopt, moet de gebruiker kunnen doorgaan zonder gegevens te verliezen. Dit vereist het testen van daadwerkelijke sessietime-outscenario\u2019s en gegevenspersistentie."
+          },
+          {
+            id: "2.2.6", name: "Time-outs", level: "AAA", status: "cannot",
+            desc: "Gebruikers moeten gewaarschuwd worden voor elke time-out die gegevensverlies kan veroorzaken, tenzij gegevens minimaal 20 uur bewaard blijven. Vereist begrip van het sessiebeheer van de applicatie."
+          },
+          {
+            id: "2.3.1", name: "Drie flitsen of onder drempel", level: "A", status: "partial",
+            desc: "Hoe: De Photosensitive Epilepsy Analysis Tool (PEAT) analyseert video-/animatieframes op flitsfrequentie. Puppeteer kan schermopnames maken en luminantieveranderingen tussen frames meten. Waarom gedeeltelijk: werkt goed voor vooraf gerenderde content, maar dynamisch/interactief flitsen (JS-getriggerd, door gebruiker ge\u00efnitieerd) vereist nog steeds menselijke beoordeling."
+          },
+          {
+            id: "2.3.2", name: "Drie flitsen", level: "AAA", status: "partial",
+            desc: "Hoe: Dezelfde PEAT/frame-analyse als 2.3.1, maar met de strengere drempel: geen flitsen boven drie per seconde (geen grootte-uitzondering). Waarom gedeeltelijk: geautomatiseerde frame-analyse werkt voor opgenomen content, maar JS-aangedreven dynamisch flitsen vereist nog steeds handmatige verificatie."
+          },
+          {
+            id: "2.3.3", name: "Animatie door interacties", level: "AAA", status: "cannot",
+            desc: "Bewegingsanimatie getriggerd door interactie moet uitschakelbaar zijn, tenzij essentieel. AI kan prefers-reduced-motion media queries in CSS detecteren, maar kan niet verifi\u00ebren of alle interactieve animaties deze voorkeur respecteren."
+          },
+          {
+            id: "2.4.1", name: "Blokken omzeilen", level: "A", status: "can",
+            desc: "Hoe: axe-core controleert op skip-navigatielinks (een &lt;a&gt; die vroeg in de DOM naar de hoofdcontent linkt), ARIA-landmarkrollen (main, navigation, banner, contentinfo) en kopstructuur. Lighthouse signaleert ook ontbrekende omzeilmechanismen. Dit zijn eenvoudige DOM-patrooncontroles."
+          },
+          {
+            id: "2.4.2", name: "Paginatitel", level: "A", status: "can",
+            desc: "Hoe: axe-core en Lighthouse controleren of document.title aanwezig, niet-leeg en geen generieke plaatshouder is. De controle bevraagt het &lt;title&gt;-element in &lt;head&gt; en valideert dat het betekenisvolle tekstinhoud heeft. Eenvoudige DOM-inspectie."
+          },
+          {
+            id: "2.4.3", name: "Focusvolgorde", level: "A", status: "cannot",
+            desc: "De tabvolgorde moet een logische en intu\u00eftieve reeks volgen. AI kan tabindex-waarden detecteren, maar kan niet beoordelen of de resulterende focusvolgorde zinvol is in de context van de paginalay-out en gebruikersworkflow."
+          },
+          {
+            id: "2.4.4", name: "Linkdoel (in context)", level: "A", status: "partial",
+            desc: "Hoe: axe-core houdt een lijst bij van generieke linktekstpatronen (\u201Cklik hier\u201D, \u201Clees meer\u201D, \u201Cmeer\u201D, \u201Clink\u201D) en signaleert &lt;a&gt;-elementen die hieraan voldoen. WAVE markeert op vergelijkbare wijze vage linktekst. Waarom gedeeltelijk: bepalen of de omringende context (bovenliggende alinea, lijstitem, tabelcel) het linkdoel duidelijk maakt vereist menselijk oordeel."
+          },
+          {
+            id: "2.4.5", name: "Meerdere manieren", level: "AA", status: "cannot",
+            desc: "Er moet meer dan \u00e9\u00e9n manier beschikbaar zijn om een pagina te vinden (bijv. zoeken, sitemap, navigatie). AI kan niet evalueren of alternatieve navigatiemechanismen bestaan en functioneel zijn over een hele site."
+          },
+          {
+            id: "2.4.6", name: "Koppen en labels", level: "AA", status: "partial",
+            desc: "Hoe: axe-core controleert of &lt;h1&gt;\u2013&lt;h6&gt;-elementen en &lt;label&gt;-elementen niet leeg zijn en zichtbare tekst bevatten. Lighthouse signaleert lege koppen. Waarom gedeeltelijk: tools verifi\u00ebren aanwezigheid en niet-leegheid, maar beoordelen of koppen en labels beschrijvend genoeg zijn om onderwerp of doel over te brengen vereist menselijk inhoudbegrip."
+          },
+          {
+            id: "2.4.7", name: "Focus zichtbaar", level: "AA", status: "partial",
+            desc: "Hoe: CSS-lintingtools en axe-core detecteren regels zoals :focus { outline: none } of :focus { outline: 0 } zonder een vervangende stijl (box-shadow, border, etc.). Stylelint-plugins kunnen outline-verwijdering signaleren. Waarom gedeeltelijk: het opvangen van outline-verwijdering in CSS is geautomatiseerd, maar verifi\u00ebren dat een zichtbare focusindicator daadwerkelijk verschijnt op alle interactieve elementen in alle staten vereist handmatige toetsenbordnavigatie."
+          },
+          {
+            id: "2.4.8", name: "Locatie", level: "AAA", status: "cannot",
+            desc: "Gebruikers moeten hun locatie binnen een set pagina\u2019s kunnen bepalen (breadcrumbs, sitemapmarkering). AI kan niet beoordelen of locatie-indicatoren aanwezig, betekenisvol en consistent beschikbaar zijn."
+          },
+          {
+            id: "2.4.9", name: "Linkdoel (alleen link)", level: "AAA", status: "partial",
+            desc: "Hoe: Dezelfde generieke-tekstdetectie als 2.4.4 (axe-core, WAVE), maar strenger: de linktekst alleen (zonder omringende context) moet het doel overbrengen. Waarom gedeeltelijk: het signaleren van generieke tekst is geautomatiseerd, maar beoordelen of niet-generieke linktekst zelfbeschrijvend is vereist inhoudbegrip."
+          },
+          {
+            id: "2.4.10", name: "Sectiekoppen", level: "AAA", status: "partial",
+            desc: "Hoe: axe-core en HTML-validators kunnen controleren of &lt;section&gt;-elementen kopelementen bevatten en of kopniveaus een logische hi\u00ebrarchie volgen. Waarom gedeeltelijk: tools verifi\u00ebren structurele aanwezigheid, maar of contentsecties zinvol zijn verdeeld en koppen hun secties passend beschrijven vereist menselijk begrip."
+          },
+          {
+            id: "2.4.11", name: "Focus niet verborgen (minimum)", level: "AA", status: "cannot",
+            desc: "Wanneer een element toetsenbordfocus ontvangt, mag het niet volledig verborgen zijn door andere content (sticky headers, modals, banners). Dit vereist interactieve tests met echte toetsenbordnavigatie om alle verbergscenario\u2019s op te vangen."
+          },
+          {
+            id: "2.4.12", name: "Focus niet verborgen (verhoogd)", level: "AAA", status: "cannot",
+            desc: "Strenger dan 2.4.11: gefocuste elementen mogen helemaal niet verborgen zijn (ook niet gedeeltelijk). Vereist uitgebreide toetsenbordtests op elk focusbaar element in verschillende paginatoestanden."
+          },
+          {
+            id: "2.4.13", name: "Focusweergave", level: "AAA", status: "partial",
+            desc: "Hoe: Tools kunnen berekende :focus-visible stijlen inspecteren en berekenen of de focusindicator voldoet aan het minimale 2px-perimetergebied en 3:1-contrastverhouding tegen zowel het gefocuste component als de achtergrond. Waarom gedeeltelijk: CSS-analyse vangt veelvoorkomende patronen op, maar het verifi\u00ebren van aangepaste focusstijlen over alle componentstaten en achtergronden vereist handmatige inspectie."
+          },
+          {
+            id: "2.5.1", name: "Aanwijzergebaren", level: "A", status: "cannot",
+            desc: "Functionaliteit die multipoint- of padgebaseerde gebaren gebruikt (knijpen, vegen, slepen) moet ook werken met \u00e9\u00e9n-aanwijzeractivering. AI kan niet alle gebaargebaseerde interacties testen of verifi\u00ebren dat \u00e9\u00e9n-aanwijzeralternatieven bestaan."
+          },
+          {
+            id: "2.5.2", name: "Aanwijzerannulering", level: "A", status: "cannot",
+            desc: "Acties moeten geactiveerd worden bij het loslaten (niet bij het indrukken) en moeten afbreekbaar of omkeerbaar zijn. AI kan niet betrouwbaar alle klik-/aanraakhandlers testen om loslaat-activering en annuleringsmechanismen te verifi\u00ebren."
+          },
+          {
+            id: "2.5.3", name: "Label in naam", level: "A", status: "can",
+            desc: "Hoe: axe-core\u2019s label-content-name-mismatch-regel haalt de zichtbare tekst van een component op (via innerText) en vergelijkt deze met de berekende toegankelijke naam (uit aria-label, aria-labelledby of het algoritme voor berekening van toegankelijke namen). Als de toegankelijke naam de zichtbare tekst niet bevat, wordt een overtreding gesignaleerd."
+          },
+          {
+            id: "2.5.4", name: "Bewegingsactivering", level: "A", status: "cannot",
+            desc: "Functionaliteit getriggerd door apparaatbeweging (schudden, kantelen) moet een UI-alternatief hebben en uitschakelbaar zijn. AI kan niet alle bewegingsgebaseerde event-listeners ontdekken of verifi\u00ebren dat alternatieven bestaan en werken."
+          },
+          {
+            id: "2.5.5", name: "Doelgrootte (verhoogd)", level: "AAA", status: "can",
+            desc: "Hoe: Tools gebruiken getBoundingClientRect() op alle interactieve elementen (links, knoppen, invoervelden) en signaleren elk element met breedte of hoogte onder 44 CSS-pixels. axe-core en aangepaste Playwright-scripts kunnen deze controle over de hele pagina uitvoeren. Eenvoudige geometrische meting op de gerenderde DOM."
+          },
+          {
+            id: "2.5.6", name: "Gelijktijdige invoermechanismen", level: "AAA", status: "cannot",
+            desc: "Content mag invoer niet beperken tot \u00e9\u00e9n modaliteit (bijv. alleen aanraken, alleen muis). AI kan niet verifi\u00ebren of het wisselen tussen toetsenbord, muis, aanraking en spraakinvoer naadloos werkt door de hele interface."
+          },
+          {
+            id: "2.5.7", name: "Sleepbewegingen", level: "AA", status: "cannot",
+            desc: "Elke functionaliteit die slepen gebruikt moet ook bereikbaar zijn met \u00e9\u00e9n aanwijzer zonder slepen (bijv. klikgebaseerd alternatief). AI kan niet alle sleepinteracties testen om te verifi\u00ebren of \u00e9\u00e9n-aanwijzeralternatieven bestaan en werken."
+          },
+          {
+            id: "2.5.8", name: "Doelgrootte (minimum)", level: "AA", status: "can",
+            desc: "Hoe: Dezelfde getBoundingClientRect()-aanpak als 2.5.5, maar met de 24\u00D724 CSS-pixeldrempel. Tools controleren ook de afstand tussen doelen (24px offset-uitzondering). axe-core bevat dit als regel. Uitzonderingen voor inline links en user-agent-bedieningselementen worden programmatisch afgehandeld."
+          }
         ]
       },
       {
-        icon: "&#128098;",
-        title: "Schoenen",
-        items: [
-          { name: "Skischoenen", note: "of ter plekke huren" },
-          { name: "Winterlaarzen / snowboots", note: "waterdicht" },
-          { name: "Pantoffels / sloffen", note: "voor in het chalet" },
-          { name: "Sneakers / casual schoenen" },
+        number: "3",
+        title: "Begrijpelijk",
+        criteria: [
+          {
+            id: "3.1.1", name: "Taal van de pagina", level: "A", status: "can",
+            desc: "Hoe: axe-core en Lighthouse controleren of het &lt;html&gt;-element een lang-attribuut heeft met een geldige BCP 47-taaltag (bijv. lang=\"en\", lang=\"nl\"). De regel valideert de tag tegen het IANA-taalsubtagregister. Eenvoudige attribuutaanwezigheids- en waardecontrole."
+          },
+          {
+            id: "3.1.2", name: "Taal van onderdelen", level: "AA", status: "partial",
+            desc: "Hoe: axe-core valideert dat elk lang-attribuut op kindelementen een geldige BCP 47-tag gebruikt. AI-taaldetectiemodellen kunnen ook tekstblokken scannen en content signaleren die in een andere taal lijkt te zijn dan de gedeclareerde lang. Waarom gedeeltelijk: het detecteren van bestaande lang-attributen is geautomatiseerd, maar het identificeren van alle passages die een andere taaltag zouden moeten hebben vereist menselijke inhoudsbeoordeling."
+          },
+          {
+            id: "3.1.3", name: "Ongebruikelijke woorden", level: "AAA", status: "cannot",
+            desc: "Er moet een mechanisme beschikbaar zijn om definities te identificeren van woorden die op een ongebruikelijke manier worden gebruikt (jargon, idiomen). AI kan niet evalueren of onbekende termen adequaat zijn gedefinieerd of in een woordenlijst zijn opgenomen in context."
+          },
+          {
+            id: "3.1.4", name: "Afkortingen", level: "AAA", status: "partial",
+            desc: "Hoe: Tools kunnen scannen op hoofdletterreeksen en controleren of deze zijn verpakt in &lt;abbr&gt;-elementen met title-attributen. Aangepaste lintregels kunnen afkortingspatronen zonder semantische opmaak signaleren. Waarom gedeeltelijk: het detecteren van afkortingen in opmaak is geautomatiseerd, maar verifi\u00ebren dat alle afkortingen bij eerste gebruik zijn uitgeschreven of gekoppeld aan een woordenlijst vereist menselijke inhoudsbeoordeling."
+          },
+          {
+            id: "3.1.5", name: "Leesniveau", level: "AAA", status: "cannot",
+            desc: "Content moet begrijpelijk zijn op het niveau van lager voortgezet onderwijs (of een vereenvoudigd alternatief bieden). Leesbaarheidsalgoritmen bestaan, maar het beoordelen van werkelijke begrijpelijkheid voor het doelpubliek vereist menselijk oordeel."
+          },
+          {
+            id: "3.1.6", name: "Uitspraak", level: "AAA", status: "cannot",
+            desc: "Waar uitspraak essentieel is voor de betekenis, moet een mechanisme beschikbaar zijn om deze te bepalen. AI kan niet beoordelen wanneer uitspraak dubbelzinnig of cruciaal is voor begrip."
+          },
+          {
+            id: "3.2.1", name: "Bij focus", level: "A", status: "cannot",
+            desc: "Het ontvangen van focus mag geen onverwachte contextveranderingen veroorzaken (paginanavigatie, formulierverzending, nieuwe vensters). AI kan niet alle focusbare elementen testen om te verifi\u00ebren dat er geen onverwacht gedrag optreedt bij focus."
+          },
+          {
+            id: "3.2.2", name: "Bij invoer", level: "A", status: "cannot",
+            desc: "Het wijzigen van een formulierinvoerinstelling mag niet automatisch een contextverandering veroorzaken, tenzij de gebruiker vooraf is ge\u00efnformeerd. Dit vereist interactieve tests van alle formulierbedieningselementen."
+          },
+          {
+            id: "3.2.3", name: "Consistente navigatie", level: "AA", status: "cannot",
+            desc: "Navigatiemechanismen die op meerdere pagina\u2019s worden herhaald, moeten in dezelfde relatieve volgorde verschijnen. AI zou meerdere pagina\u2019s moeten crawlen en vergelijken, en zelfs dan is menselijk oordeel nodig om \u201Cconsistentie\u201D te beoordelen."
+          },
+          {
+            id: "3.2.4", name: "Consistente identificatie", level: "AA", status: "cannot",
+            desc: "Componenten met dezelfde functionaliteit moeten consistent worden ge\u00efdentificeerd over pagina\u2019s heen. Vereist vergelijking tussen pagina\u2019s en menselijk begrip van componentdoel."
+          },
+          {
+            id: "3.2.5", name: "Verandering op verzoek", level: "AAA", status: "cannot",
+            desc: "Contextveranderingen mogen alleen plaatsvinden op verzoek van de gebruiker, of er moet een mechanisme bestaan om automatische veranderingen uit te schakelen. Vereist begrip van alle mogelijke contextveranderingen in de applicatie."
+          },
+          {
+            id: "3.2.6", name: "Consistente hulp", level: "A", status: "cannot",
+            desc: "Als hulpmechanismen (contactgegevens, chat, FAQ-links) op meerdere pagina\u2019s aanwezig zijn, moeten ze op dezelfde relatieve locatie verschijnen. Vereist verificatie over pagina\u2019s heen en menselijke beoordeling van de plaatsing van hulpmechanismen."
+          },
+          {
+            id: "3.3.1", name: "Foutidentificatie", level: "A", status: "cannot",
+            desc: "Invoerfouten moeten automatisch gedetecteerd en in tekst aan de gebruiker beschreven worden. AI kan niet alle mogelijke fouttoestanden activeren of evalueren of foutmeldingen het probleem duidelijk beschrijven."
+          },
+          {
+            id: "3.3.2", name: "Labels of instructies", level: "A", status: "partial",
+            desc: "Hoe: axe-core verifieert dat elk &lt;input&gt;-, &lt;select&gt;- en &lt;textarea&gt;-element een gekoppeld label heeft via &lt;label for=\"...\"&gt;, aria-label of aria-labelledby. Het controleert ook of labels niet leeg zijn. Waarom gedeeltelijk: labelkoppeling is geautomatiseerd, maar beoordelen of de labels en instructies duidelijk genoeg zijn voor gebruikers om te begrijpen wat wordt verwacht vereist menselijk oordeel."
+          },
+          {
+            id: "3.3.3", name: "Foutsuggestie", level: "AA", status: "cannot",
+            desc: "Wanneer een invoerfout wordt gedetecteerd, moeten suggesties voor correctie worden gegeven (indien bekend). AI kan niet alle fouttoestanden activeren of evalueren of suggesties nuttig en passend zijn."
+          },
+          {
+            id: "3.3.4", name: "Foutpreventie (juridisch, financieel, gegevens)", level: "AA", status: "cannot",
+            desc: "Voor pagina\u2019s met juridische verplichtingen of financi\u00eble transacties moeten inzendingen omkeerbaar, controleerbaar of bevestigbaar zijn. Vereist begrip van de volledige inzendingsstroom en de gevolgen ervan."
+          },
+          {
+            id: "3.3.5", name: "Hulp", level: "AAA", status: "cannot",
+            desc: "Contextgevoelige hulp moet beschikbaar zijn. AI kan niet beoordelen of hulpinhoud aanwezig, relevant en nuttig is voor de specifieke taak."
+          },
+          {
+            id: "3.3.6", name: "Foutpreventie (alle)", level: "AAA", status: "cannot",
+            desc: "Strenger dan 3.3.4: geldt voor alle formulierinzendingen, niet alleen juridisch/financieel. Dezelfde vereisten voor omkeerbare, controleerbare of bevestigbare inzendingen. Vereist volledige workflowtests."
+          },
+          {
+            id: "3.3.7", name: "Overbodige invoer", level: "A", status: "cannot",
+            desc: "Informatie die eerder door de gebruiker is ingevoerd, moet automatisch worden ingevuld of beschikbaar zijn voor selectie (niet opnieuw worden ingevoerd). AI kan formuliergegevensstromen over stappen heen niet traceren om te verifi\u00ebren of informatie behouden blijft."
+          },
+          {
+            id: "3.3.8", name: "Toegankelijke authenticatie (minimum)", level: "AA", status: "cannot",
+            desc: "Authenticatie mag geen cognitieve functietests vereisen (bijv. een wachtwoord onthouden, een puzzel oplossen), tenzij alternatieven bestaan. AI kan niet alle authenticatiepaden evalueren of hun cognitieve belasting beoordelen."
+          },
+          {
+            id: "3.3.9", name: "Toegankelijke authenticatie (verhoogd)", level: "AAA", status: "cannot",
+            desc: "Strenger dan 3.3.8: helemaal geen cognitieve functietest is toegestaan voor authenticatie (geen object- of inhoudsherkenning). Vereist dezelfde uitgebreide authenticatiestroomtests."
+          }
         ]
       },
       {
-        icon: "&#127935;",
-        title: "Ski-uitrusting",
-        items: [
-          { name: "Ski's / snowboard", note: "of ter plekke huren" },
-          { name: "Skistokken" },
-          { name: "Skipas / liftpas" },
-          { name: "Rugzakje voor op de piste" },
-          { name: "Ski-lock / slot" },
+        number: "4",
+        title: "Robuust",
+        criteria: [
+          {
+            id: "4.1.2", name: "Naam, rol, waarde", level: "A", status: "partial",
+            desc: "Hoe: axe-core valideert ARIA-rollen tegen de WAI-ARIA-specificatie, controleert of vereiste ARIA-eigenschappen aanwezig zijn (bijv. aria-checked op role=\"checkbox\") en verifieert toegankelijke namen met het algoritme voor berekening van toegankelijke namen. Waarom gedeeltelijk: standaard HTML-elementen zijn goed gedekt, maar aangepaste widgets met complex toestandsbeheer (aria-expanded, aria-selected, dynamische updates) vereisen handmatige tests met schermlezers zoals NVDA of VoiceOver."
+          },
+          {
+            id: "4.1.3", name: "Statusberichten", level: "AA", status: "cannot",
+            desc: "Statusberichten (succesbevestigingen, foutwaarschuwingen, voortgangsupdates) moeten programmatisch worden aangekondigd aan hulptechnologie via ARIA-liveregio\u2019s. AI kan controleren op role=\"status\" of aria-live-attributen, maar verifi\u00ebren dat dynamische updates daadwerkelijk correct worden aangekondigd vereist schermlezertests."
+          }
         ]
-      },
-      {
-        icon: "&#128132;",
-        title: "Verzorging & beauty",
-        items: [
-          { name: "Zonnebrandcrème SPF 50", note: "voor op hoogte!" },
-          { name: "Lippenbalsem met SPF" },
-          { name: "Moisturizer / dagcrème" },
-          { name: "Shampoo & conditioner" },
-          { name: "Douchegel" },
-          { name: "Deodorant" },
-          { name: "Tandenborstel & tandpasta" },
-          { name: "Haarborstel / kam" },
-          { name: "Haarelastiekjes" },
-          { name: "Make-up basics" },
-          { name: "Make-up remover" },
-          { name: "Nagelvijl" },
-          { name: "Scheermesjes" },
-        ]
-      },
-      {
-        icon: "&#129657;",
-        title: "Gezondheid & EHBO",
-        items: [
-          { name: "Eigen medicijnen" },
-          { name: "Paracetamol / ibuprofen" },
-          { name: "Pleisters & blaarpleisters" },
-          { name: "Spiercrème", note: "voor na het skiën" },
-          { name: "Vitamines" },
-          { name: "Reiszakje EHBO" },
-          { name: "Zonnebril", note: "UV400 categorie 3-4" },
-        ]
-      },
-      {
-        icon: "&#128241;",
-        title: "Techniek & gadgets",
-        items: [
-          { name: "Telefoon + oplader" },
-          { name: "Powerbank" },
-          { name: "Koptelefoon / oordopjes" },
-          { name: "Camera", note: "optioneel" },
-          { name: "Universele adapter", note: "check het land" },
-          { name: "E-reader / boek" },
-        ]
-      },
-      {
-        icon: "&#128188;",
-        title: "Reisdocumenten & geld",
-        items: [
-          { name: "Paspoort / ID-kaart" },
-          { name: "Reisverzekering", note: "incl. wintersport!" },
-          { name: "EHIC / Europese zorgkaart" },
-          { name: "Pinpas & creditcard" },
-          { name: "Contant geld", note: "voor huttjes op de piste" },
-          { name: "Rijbewijs", note: "als je rijdt" },
-          { name: "Vignet", note: "Oostenrijk / Zwitserland" },
-          { name: "Reserveringsbevestigingen" },
-        ]
-      },
-      {
-        icon: "&#127878;",
-        title: "After-ski & avond",
-        items: [
-          { name: "Leuke outfit voor uit eten" },
-          { name: "Jurkje of nette top" },
-          { name: "Sieraden" },
-          { name: "Parfum" },
-          { name: "Kaartspel / bordspel", note: "voor gezellige avonden" },
-        ]
-      },
-      {
-        icon: "&#128663;",
-        title: "Auto & reis",
-        items: [
-          { name: "Sneeuwkettingen", note: "check of verplicht" },
-          { name: "IJskrabber" },
-          { name: "Deken voor in de auto" },
-          { name: "Snacks voor onderweg" },
-          { name: "Water / drinkfles" },
-          { name: "Muziek / podcast playlist" },
-        ]
-      },
+      }
     ];
 
-    // ── State (localStorage) ──
-    const STORAGE_KEY = "wintersport-paklijst-2026";
-
-    function loadState() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-      } catch { return {}; }
-    }
-
-    function saveState(state) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    let state = loadState();
+    // ── State ──
+    let currentStatusFilter = "all";
+    let currentLevelFilter = "all";
+    let currentSearchTerm = "";
 
     // ── Render ──
-    const categoriesEl = document.getElementById("categories");
+    const principlesEl = document.getElementById("principles");
 
-    function itemKey(catIdx, itemIdx) {
-      return `${catIdx}-${itemIdx}`;
-    }
+    function render() {
+      principlesEl.innerHTML = "";
+      const search = currentSearchTerm.toLowerCase();
+      let totalVisible = 0;
 
-    function totalItems() {
-      return packingData.reduce((sum, cat) => sum + cat.items.length, 0);
-    }
+      principles.forEach(principle => {
+        const filtered = principle.criteria.filter(c => {
+          if (currentStatusFilter !== "all" && c.status !== currentStatusFilter) return false;
+          if (currentLevelFilter !== "all" && c.level !== currentLevelFilter) return false;
+          if (search) {
+            const haystack = (c.id + " " + c.name + " " + c.desc).toLowerCase();
+            if (!haystack.includes(search)) return false;
+          }
+          return true;
+        });
 
-    function checkedItems() {
-      return Object.values(state).filter(Boolean).length;
-    }
+        if (filtered.length === 0) return;
+        totalVisible += filtered.length;
 
-    function updateProgress() {
-      const total = totalItems();
-      const checked = checkedItems();
-      const pct = total ? Math.round((checked / total) * 100) : 0;
-      document.getElementById("checked-count").textContent = checked;
-      document.getElementById("progress-pct").textContent = `${pct}%`;
-      document.getElementById("progress-fill").style.width = `${pct}%`;
-
-      if (pct === 100) {
-        launchConfetti();
-      }
-    }
-
-    function renderCategories() {
-      categoriesEl.innerHTML = "";
-
-      packingData.forEach((cat, catIdx) => {
-        const catEl = document.createElement("div");
-        catEl.className = "category open";
-
-        const checkedInCat = cat.items.filter((_, i) => state[itemKey(catIdx, i)]).length;
-
-        catEl.innerHTML = `
-          <div class="category-header" onclick="this.parentElement.classList.toggle('open')">
-            <div class="category-header-left">
-              <span class="category-icon">${cat.icon}</span>
-              <span class="category-title">${cat.title}</span>
-              <span class="category-count">${checkedInCat}/${cat.items.length}</span>
-            </div>
-            <svg class="category-chevron" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
-            </svg>
+        const section = document.createElement("section");
+        section.className = "principle";
+        section.innerHTML = `
+          <div class="principle-header">
+            <span class="principle-number">${principle.number}</span>
+            <h2 class="principle-title">${principle.title}</h2>
+            <span class="principle-count">${filtered.length} criteria</span>
           </div>
-          <div class="category-items">
-            <div class="category-items-inner">
-              ${cat.items.map((item, itemIdx) => {
-                const key = itemKey(catIdx, itemIdx);
-                const isChecked = state[key];
-                return `
-                  <div class="item ${isChecked ? 'checked' : ''}" data-key="${key}">
-                    <label class="checkbox">
-                      <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleItem('${key}', this)">
-                      <span class="checkmark">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                          <path d="M11.5 3.5L5.5 10L2.5 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </span>
-                    </label>
-                    <span class="item-label" onclick="this.previousElementSibling.querySelector('input').click()">${item.name}</span>
-                    ${item.note ? `<span class="item-note">${item.note}</span>` : ''}
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
+          <ul class="criteria-list"></ul>
         `;
 
-        categoriesEl.appendChild(catEl);
+        const list = section.querySelector(".criteria-list");
+        filtered.forEach(c => {
+          const li = document.createElement("li");
+          li.className = "criterion";
+          li.id = "sc-" + c.id;
+          li.innerHTML = `
+            <span class="criterion-status ${c.status}"></span>
+            <div class="criterion-content">
+              <div class="criterion-header">
+                <span class="criterion-id">${c.id}</span>
+                <span class="criterion-name">${c.name}</span>
+                <span class="criterion-level">${c.level}</span>
+              </div>
+              <div class="criterion-detail">
+                <div class="criterion-detail-inner">
+                  <div class="criterion-desc">${c.desc}</div>
+                </div>
+              </div>
+            </div>
+            <svg class="criterion-chevron" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+          `;
+          li.addEventListener("click", (e) => {
+            li.classList.toggle("open");
+            if (li.classList.contains("open")) {
+              history.replaceState(null, "", "#" + c.id);
+            }
+          });
+          list.appendChild(li);
+        });
+
+        principlesEl.appendChild(section);
       });
 
-      updateProgress();
-    }
-
-    // ── Interactions ──
-    function toggleItem(key, checkbox) {
-      state[key] = checkbox.checked;
-      saveState(state);
-
-      const itemEl = checkbox.closest('.item');
-      itemEl.classList.toggle('checked', checkbox.checked);
-
-      // Update category count
-      const catEl = itemEl.closest('.category');
-      const countEl = catEl.querySelector('.category-count');
-      const checks = catEl.querySelectorAll('input[type="checkbox"]');
-      const checked = [...checks].filter(c => c.checked).length;
-      countEl.textContent = `${checked}/${checks.length}`;
-
-      updateProgress();
-    }
-
-    function toggleAll(checked) {
-      packingData.forEach((cat, catIdx) => {
-        cat.items.forEach((_, itemIdx) => {
-          state[itemKey(catIdx, itemIdx)] = checked;
-        });
-      });
-      saveState(state);
-      renderCategories();
-    }
-
-    function expandAll() {
-      document.querySelectorAll('.category').forEach(c => c.classList.add('open'));
-    }
-
-    function collapseAll() {
-      document.querySelectorAll('.category').forEach(c => c.classList.remove('open'));
-    }
-
-    // ── Confetti ──
-    function launchConfetti() {
-      const canvas = document.getElementById('confetti-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const particles = [];
-      const colors = ['#C96442', '#D97757', '#E39A82', '#4682D5', '#8DC261', '#C49030', '#79AAE4'];
-
-      for (let i = 0; i < 150; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height - canvas.height,
-          w: Math.random() * 10 + 4,
-          h: Math.random() * 6 + 3,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          speed: Math.random() * 3 + 2,
-          angle: Math.random() * Math.PI * 2,
-          spin: (Math.random() - 0.5) * 0.2,
-          drift: (Math.random() - 0.5) * 1.5,
-        });
+      if (totalVisible === 0) {
+        principlesEl.innerHTML = '<div class="no-results">Geen criteria gevonden voor deze zoekopdracht.</div>';
       }
-
-      let frame = 0;
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let alive = false;
-
-        particles.forEach(p => {
-          if (p.y < canvas.height + 20) alive = true;
-          p.y += p.speed;
-          p.x += p.drift;
-          p.angle += p.spin;
-
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.angle);
-          ctx.fillStyle = p.color;
-          ctx.globalAlpha = Math.max(0, 1 - p.y / canvas.height);
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-          ctx.restore();
-        });
-
-        frame++;
-        if (alive && frame < 300) {
-          requestAnimationFrame(animate);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-      }
-
-      animate();
     }
 
-    // ── Init ──
-    renderCategories();
+    function filterCriteria(filter) {
+      currentStatusFilter = filter;
+      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+      render();
+    }
+
+    function filterLevel(level) {
+      currentLevelFilter = level;
+      document.querySelectorAll(".level-btn").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+      render();
+    }
+
+    // ── Search with debounce ──
+    const searchInput = document.getElementById("search-input");
+    let searchTimeout;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        currentSearchTerm = searchInput.value.trim();
+        render();
+      }, 200);
+    });
+
+    // ── Deep links ──
+    function handleHash() {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) return;
+      const el = document.getElementById("sc-" + hash);
+      if (el) {
+        el.classList.add("open");
+        el.classList.add("highlighted");
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.addEventListener("animationend", () => el.classList.remove("highlighted"), { once: true });
+      }
+    }
+
+    window.addEventListener("hashchange", () => {
+      // Re-render to ensure the criterion is visible, then scroll
+      render();
+      handleHash();
+    });
+
+    // Initial render
+    render();
+    handleHash();
   </script>
 </body>
 </html>
