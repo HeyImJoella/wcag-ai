@@ -4,8 +4,9 @@
     {
       "name": "paklijst",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "8765", "-s", "."],
-      "port": 8765
+      "runtimeArgs": ["serve", "."],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }
