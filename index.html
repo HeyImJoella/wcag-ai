@@ -163,48 +163,27 @@
       padding: var(--spacing-xl) var(--layout-container-padding);
     }
 
-    /* ── Legend ── */
-    .legend {
+    /* ── Unified filter row ── */
+    .filter-row {
       display: flex;
-      justify-content: center;
-      gap: var(--spacing-md);
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
       flex-wrap: wrap;
       margin-bottom: var(--spacing-xl);
-      padding: var(--spacing-sm) var(--spacing-md);
-      background: var(--surface-neutral-1);
-      border-radius: var(--radius-circular);
-      border: var(--border-width-sm) solid var(--border-neutral-2);
     }
 
-    .legend-item {
+    .filter-group {
       display: flex;
       align-items: center;
       gap: var(--spacing-2xs);
-      font-size: var(--body-size-sm);
-      color: var(--content-1);
-    }
-
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: var(--radius-circular);
-      flex-shrink: 0;
-    }
-
-    .legend-dot.green { background: var(--color-green-400); }
-    .legend-dot.yellow { background: var(--color-yellow-400); }
-    .legend-dot.red { background: var(--color-red-400); }
-
-    /* ── Filter buttons ── */
-    .filters {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-2xs);
-      margin-bottom: var(--spacing-xl);
       flex-wrap: wrap;
     }
 
     .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-2xs);
       font-family: var(--font-family-body);
       font-size: var(--body-size-sm);
       font-weight: var(--font-weight-medium);
@@ -226,6 +205,23 @@
       background: var(--surface-secondary-default);
       color: var(--content-inverse);
       border-color: var(--surface-secondary-default);
+    }
+
+    /* Colored dot inside status filter buttons */
+    .filter-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-circular);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .filter-dot.green  { background: var(--color-green-400); }
+    .filter-dot.yellow { background: var(--color-yellow-400); }
+    .filter-dot.red    { background: var(--color-red-400); }
+
+    .filter-btn.active .filter-dot {
+      background: rgba(255, 255, 255, 0.85);
     }
 
     /* ── Principle sections ── */
@@ -465,22 +461,22 @@
       width: 100%;
       padding: var(--spacing-sm) var(--spacing-md);
       padding-left: 2.5rem;
-      border: 1px solid var(--border-color-neutral-default, #d0d0d0);
+      border: var(--border-width-sm) solid var(--border-neutral-2);
       border-radius: var(--radius-md);
-      font-family: "Anthropic Sans Text", system-ui, sans-serif;
-      font-size: var(--font-body-md-size, 1rem);
-      background: var(--surface-color-neutral-base, #fff);
-      color: var(--content-color-base, #1a1a1a);
+      font-family: var(--font-family-body);
+      font-size: var(--body-size-md);
+      background: var(--surface-neutral-base);
+      color: var(--content-base);
       transition: border-color 0.15s;
       box-sizing: border-box;
     }
     .search-bar input:focus {
       outline: none;
-      border-color: var(--surface-color-secondary-default, #da7756);
+      border-color: var(--surface-secondary-default);
       box-shadow: 0 0 0 3px rgba(218, 119, 86, 0.15);
     }
     .search-bar input::placeholder {
-      color: var(--content-color-2, #888);
+      color: var(--content-2);
     }
     .search-wrapper {
       position: relative;
@@ -492,36 +488,93 @@
       transform: translateY(-50%);
       width: 1rem;
       height: 1rem;
-      color: var(--content-color-2, #888);
+      color: var(--content-2);
       pointer-events: none;
     }
 
-    /* ── Level filter ── */
-    .level-filters {
+    /* ── Evaluation panel ── */
+    .criterion-eval {
       display: flex;
-      gap: var(--spacing-xs);
-      flex-wrap: wrap;
-      margin-bottom: var(--spacing-lg);
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-sm);
+      padding-top: var(--spacing-sm);
+      border-top: var(--border-width-sm) solid var(--border-neutral-1);
     }
-    .level-btn {
-      padding: var(--spacing-2xs) var(--spacing-sm);
-      border: 1px solid var(--border-color-neutral-default, #d0d0d0);
-      border-radius: var(--radius-full, 100px);
-      background: var(--surface-color-neutral-base, #fff);
-      color: var(--content-color-1, #444);
-      font-family: "Anthropic Sans Text", system-ui, sans-serif;
-      font-size: var(--font-body-sm-size, 0.875rem);
+
+    .eval-check-label {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2xs);
+      font-size: var(--body-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--content-1);
       cursor: pointer;
-      transition: all 0.15s;
+      white-space: nowrap;
+      user-select: none;
+      padding-top: 3px;
     }
-    .level-btn:hover {
-      border-color: var(--surface-color-secondary-default, #da7756);
-      color: var(--surface-color-secondary-default, #da7756);
+
+    .eval-checkbox {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--color-green-500, #3d8b5c);
+      cursor: pointer;
+      flex-shrink: 0;
     }
-    .level-btn.active {
-      background: var(--surface-color-secondary-default, #da7756);
-      border-color: var(--surface-color-secondary-default, #da7756);
-      color: #fff;
+
+    .eval-notes {
+      flex: 1;
+      font-family: var(--font-family-body);
+      font-size: var(--body-size-sm);
+      color: var(--content-base);
+      background: var(--surface-neutral-1);
+      border: var(--border-width-sm) solid var(--border-neutral-2);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-2xs) var(--spacing-sm);
+      resize: vertical;
+      min-height: 56px;
+      line-height: var(--font-body-sm-line-height);
+      transition: border-color 0.15s;
+    }
+
+    .eval-notes:focus {
+      outline: none;
+      border-color: var(--border-neutral-3);
+      background: var(--surface-neutral-base);
+    }
+
+    .eval-notes::placeholder { color: var(--content-2); }
+
+    /* Badges on the collapsed criterion row */
+    .eval-done-badge {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: var(--radius-circular);
+      background: var(--color-green-100, #d6f0e4);
+      color: var(--color-green-600, #276344);
+      flex-shrink: 0;
+    }
+
+    .criterion.evaluated .eval-done-badge { display: flex; }
+
+    .eval-notes-dot {
+      display: none;
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-circular);
+      background: var(--color-brand-400);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .criterion.has-notes .eval-notes-dot { display: block; }
+
+    @media (max-width: 600px) {
+      .criterion-eval { flex-direction: column; gap: var(--spacing-sm); }
     }
 
     /* ── Deep link highlight ── */
@@ -581,13 +634,6 @@
 
   <main class="container">
 
-    <!-- Legend -->
-    <div class="legend">
-      <span class="legend-item"><span class="legend-dot green"></span> Volledig automatiseerbaar</span>
-      <span class="legend-item"><span class="legend-dot yellow"></span> Gedeeltelijk automatiseerbaar</span>
-      <span class="legend-item"><span class="legend-dot red"></span> Menselijke beoordeling vereist</span>
-    </div>
-
     <!-- Search -->
     <div class="search-bar">
       <div class="search-wrapper">
@@ -598,20 +644,24 @@
       </div>
     </div>
 
-    <!-- Level filter -->
-    <div class="level-filters">
-      <button class="level-btn active" onclick="filterLevel('all')">Alle levels</button>
-      <button class="level-btn" onclick="filterLevel('A')">A</button>
-      <button class="level-btn" onclick="filterLevel('AA')">AA</button>
-      <button class="level-btn" onclick="filterLevel('AAA')">AAA</button>
-    </div>
-
-    <!-- Status filters -->
-    <div class="filters">
-      <button class="filter-btn active" onclick="filterCriteria('all')">Alle 86</button>
-      <button class="filter-btn" onclick="filterCriteria('can')">Volledig automatiseerbaar (9)</button>
-      <button class="filter-btn" onclick="filterCriteria('partial')">Gedeeltelijk (25)</button>
-      <button class="filter-btn" onclick="filterCriteria('cannot')">Menselijk vereist (52)</button>
+    <!-- Filters: level left, status right -->
+    <div class="filter-row">
+      <div class="filter-group">
+        <button class="filter-btn level-btn" data-level="A" onclick="toggleLevel('A')">A</button>
+        <button class="filter-btn level-btn" data-level="AA" onclick="toggleLevel('AA')">AA</button>
+        <button class="filter-btn level-btn" data-level="AAA" onclick="toggleLevel('AAA')">AAA</button>
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn status-btn" data-status="can" onclick="toggleStatus('can')">
+          <span class="filter-dot green"></span>Volledig (9)
+        </button>
+        <button class="filter-btn status-btn" data-status="partial" onclick="toggleStatus('partial')">
+          <span class="filter-dot yellow"></span>Gedeeltelijk (25)
+        </button>
+        <button class="filter-btn status-btn" data-status="cannot" onclick="toggleStatus('cannot')">
+          <span class="filter-dot red"></span>Menselijk (52)
+        </button>
+      </div>
     </div>
 
     <!-- Criteria by principle -->
@@ -1015,9 +1065,23 @@
       }
     ];
 
+    // ── Evaluation storage ──
+    const EVAL_KEY = "wcag-eval";
+    let evalData = {};
+    try { evalData = JSON.parse(localStorage.getItem(EVAL_KEY) || "{}"); } catch(e) {}
+
+    function saveEval(id) {
+      localStorage.setItem(EVAL_KEY, JSON.stringify(evalData));
+      const li = document.getElementById("sc-" + id);
+      if (li) {
+        li.classList.toggle("evaluated", !!evalData[id]?.checked);
+        li.classList.toggle("has-notes",  !!(evalData[id]?.notes?.trim()));
+      }
+    }
+
     // ── State ──
-    let currentStatusFilter = "all";
-    let currentLevelFilter = "all";
+    const activeStatuses = new Set(); // empty = toon alles
+    const activeLevels   = new Set(); // empty = toon alles
     let currentSearchTerm = "";
 
     // ── Render ──
@@ -1030,8 +1094,8 @@
 
       principles.forEach(principle => {
         const filtered = principle.criteria.filter(c => {
-          if (currentStatusFilter !== "all" && c.status !== currentStatusFilter) return false;
-          if (currentLevelFilter !== "all" && c.level !== currentLevelFilter) return false;
+          if (activeStatuses.size > 0 && !activeStatuses.has(c.status)) return false;
+          if (activeLevels.size   > 0 && !activeLevels.has(c.level))   return false;
           if (search) {
             const haystack = (c.id + " " + c.name + " " + c.desc).toLowerCase();
             if (!haystack.includes(search)) return false;
@@ -1055,9 +1119,13 @@
 
         const list = section.querySelector(".criteria-list");
         filtered.forEach(c => {
+          const ev = evalData[c.id] || {};
           const li = document.createElement("li");
           li.className = "criterion";
           li.id = "sc-" + c.id;
+          if (ev.checked)       li.classList.add("evaluated");
+          if (ev.notes?.trim()) li.classList.add("has-notes");
+
           li.innerHTML = `
             <span class="criterion-status ${c.status}"></span>
             <div class="criterion-content">
@@ -1065,10 +1133,23 @@
                 <span class="criterion-id">${c.id}</span>
                 <span class="criterion-name">${c.name}</span>
                 <span class="criterion-level">${c.level}</span>
+                <span class="eval-done-badge" title="Geëvalueerd">
+                  <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </span>
+                <span class="eval-notes-dot" title="Heeft opmerkingen"></span>
               </div>
               <div class="criterion-detail">
                 <div class="criterion-detail-inner">
                   <div class="criterion-desc">${c.desc}</div>
+                  <div class="criterion-eval">
+                    <label class="eval-check-label">
+                      <input type="checkbox" class="eval-checkbox" ${ev.checked ? "checked" : ""}>
+                      <span>Geëvalueerd</span>
+                    </label>
+                    <textarea class="eval-notes" placeholder="Voeg een opmerking toe…" rows="2">${ev.notes ? ev.notes.replace(/</g,"&lt;") : ""}</textarea>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1076,6 +1157,32 @@
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
             </svg>
           `;
+
+          // Stop propagation so clicking eval elements doesn't toggle open/close
+          li.querySelector(".criterion-eval").addEventListener("click", e => e.stopPropagation());
+
+          // Checkbox
+          const checkbox = li.querySelector(".eval-checkbox");
+          checkbox.addEventListener("change", e => {
+            e.stopPropagation();
+            if (!evalData[c.id]) evalData[c.id] = {};
+            evalData[c.id].checked = checkbox.checked;
+            saveEval(c.id);
+          });
+
+          // Notes with debounce
+          const textarea = li.querySelector(".eval-notes");
+          let notesTimeout;
+          textarea.addEventListener("input", e => {
+            e.stopPropagation();
+            clearTimeout(notesTimeout);
+            notesTimeout = setTimeout(() => {
+              if (!evalData[c.id]) evalData[c.id] = {};
+              evalData[c.id].notes = textarea.value;
+              saveEval(c.id);
+            }, 400);
+          });
+
           li.addEventListener("click", (e) => {
             li.classList.toggle("open");
             if (li.classList.contains("open")) {
@@ -1093,17 +1200,27 @@
       }
     }
 
-    function filterCriteria(filter) {
-      currentStatusFilter = filter;
-      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
+    function toggleStatus(status) {
+      if (activeStatuses.has(status)) {
+        activeStatuses.delete(status);
+      } else {
+        activeStatuses.add(status);
+      }
+      document.querySelectorAll(".status-btn").forEach(btn => {
+        btn.classList.toggle("active", activeStatuses.has(btn.dataset.status));
+      });
       render();
     }
 
-    function filterLevel(level) {
-      currentLevelFilter = level;
-      document.querySelectorAll(".level-btn").forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
+    function toggleLevel(level) {
+      if (activeLevels.has(level)) {
+        activeLevels.delete(level);
+      } else {
+        activeLevels.add(level);
+      }
+      document.querySelectorAll(".level-btn").forEach(btn => {
+        btn.classList.toggle("active", activeLevels.has(btn.dataset.level));
+      });
       render();
     }
 
