@@ -163,48 +163,27 @@
       padding: var(--spacing-xl) var(--layout-container-padding);
     }
 
-    /* ── Legend ── */
-    .legend {
+    /* ── Unified filter row ── */
+    .filter-row {
       display: flex;
-      justify-content: center;
-      gap: var(--spacing-md);
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
       flex-wrap: wrap;
       margin-bottom: var(--spacing-xl);
-      padding: var(--spacing-sm) var(--spacing-md);
-      background: var(--surface-neutral-1);
-      border-radius: var(--radius-circular);
-      border: var(--border-width-sm) solid var(--border-neutral-2);
     }
 
-    .legend-item {
+    .filter-group {
       display: flex;
       align-items: center;
       gap: var(--spacing-2xs);
-      font-size: var(--body-size-sm);
-      color: var(--content-1);
-    }
-
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: var(--radius-circular);
-      flex-shrink: 0;
-    }
-
-    .legend-dot.green { background: var(--color-green-400); }
-    .legend-dot.yellow { background: var(--color-yellow-400); }
-    .legend-dot.red { background: var(--color-red-400); }
-
-    /* ── Filter buttons ── */
-    .filters {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-2xs);
-      margin-bottom: var(--spacing-xl);
       flex-wrap: wrap;
     }
 
     .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-2xs);
       font-family: var(--font-family-body);
       font-size: var(--body-size-sm);
       font-weight: var(--font-weight-medium);
@@ -226,6 +205,23 @@
       background: var(--surface-secondary-default);
       color: var(--content-inverse);
       border-color: var(--surface-secondary-default);
+    }
+
+    /* Colored dot inside status filter buttons */
+    .filter-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-circular);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .filter-dot.green  { background: var(--color-green-400); }
+    .filter-dot.yellow { background: var(--color-yellow-400); }
+    .filter-dot.red    { background: var(--color-red-400); }
+
+    .filter-btn.active .filter-dot {
+      background: rgba(255, 255, 255, 0.85);
     }
 
     /* ── Principle sections ── */
@@ -465,22 +461,22 @@
       width: 100%;
       padding: var(--spacing-sm) var(--spacing-md);
       padding-left: 2.5rem;
-      border: 1px solid var(--border-color-neutral-default, #d0d0d0);
+      border: var(--border-width-sm) solid var(--border-neutral-2);
       border-radius: var(--radius-md);
-      font-family: "Anthropic Sans Text", system-ui, sans-serif;
-      font-size: var(--font-body-md-size, 1rem);
-      background: var(--surface-color-neutral-base, #fff);
-      color: var(--content-color-base, #1a1a1a);
+      font-family: var(--font-family-body);
+      font-size: var(--body-size-md);
+      background: var(--surface-neutral-base);
+      color: var(--content-base);
       transition: border-color 0.15s;
       box-sizing: border-box;
     }
     .search-bar input:focus {
       outline: none;
-      border-color: var(--surface-color-secondary-default, #da7756);
+      border-color: var(--surface-secondary-default);
       box-shadow: 0 0 0 3px rgba(218, 119, 86, 0.15);
     }
     .search-bar input::placeholder {
-      color: var(--content-color-2, #888);
+      color: var(--content-2);
     }
     .search-wrapper {
       position: relative;
@@ -492,36 +488,8 @@
       transform: translateY(-50%);
       width: 1rem;
       height: 1rem;
-      color: var(--content-color-2, #888);
+      color: var(--content-2);
       pointer-events: none;
-    }
-
-    /* ── Level filter ── */
-    .level-filters {
-      display: flex;
-      gap: var(--spacing-xs);
-      flex-wrap: wrap;
-      margin-bottom: var(--spacing-lg);
-    }
-    .level-btn {
-      padding: var(--spacing-2xs) var(--spacing-sm);
-      border: 1px solid var(--border-color-neutral-default, #d0d0d0);
-      border-radius: var(--radius-full, 100px);
-      background: var(--surface-color-neutral-base, #fff);
-      color: var(--content-color-1, #444);
-      font-family: "Anthropic Sans Text", system-ui, sans-serif;
-      font-size: var(--font-body-sm-size, 0.875rem);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .level-btn:hover {
-      border-color: var(--surface-color-secondary-default, #da7756);
-      color: var(--surface-color-secondary-default, #da7756);
-    }
-    .level-btn.active {
-      background: var(--surface-color-secondary-default, #da7756);
-      border-color: var(--surface-color-secondary-default, #da7756);
-      color: #fff;
     }
 
     /* ── Deep link highlight ── */
@@ -581,13 +549,6 @@
 
   <main class="container">
 
-    <!-- Legend -->
-    <div class="legend">
-      <span class="legend-item"><span class="legend-dot green"></span> Volledig automatiseerbaar</span>
-      <span class="legend-item"><span class="legend-dot yellow"></span> Gedeeltelijk automatiseerbaar</span>
-      <span class="legend-item"><span class="legend-dot red"></span> Menselijke beoordeling vereist</span>
-    </div>
-
     <!-- Search -->
     <div class="search-bar">
       <div class="search-wrapper">
@@ -598,20 +559,24 @@
       </div>
     </div>
 
-    <!-- Level filter -->
-    <div class="level-filters">
-      <button class="level-btn active" onclick="filterLevel('all')">Alle levels</button>
-      <button class="level-btn" onclick="filterLevel('A')">A</button>
-      <button class="level-btn" onclick="filterLevel('AA')">AA</button>
-      <button class="level-btn" onclick="filterLevel('AAA')">AAA</button>
-    </div>
-
-    <!-- Status filters -->
-    <div class="filters">
-      <button class="filter-btn active" onclick="filterCriteria('all')">Alle 86</button>
-      <button class="filter-btn" onclick="filterCriteria('can')">Volledig automatiseerbaar (9)</button>
-      <button class="filter-btn" onclick="filterCriteria('partial')">Gedeeltelijk (25)</button>
-      <button class="filter-btn" onclick="filterCriteria('cannot')">Menselijk vereist (52)</button>
+    <!-- Filters: level left, status right -->
+    <div class="filter-row">
+      <div class="filter-group">
+        <button class="filter-btn level-btn" data-level="A" onclick="toggleLevel('A')">A</button>
+        <button class="filter-btn level-btn" data-level="AA" onclick="toggleLevel('AA')">AA</button>
+        <button class="filter-btn level-btn" data-level="AAA" onclick="toggleLevel('AAA')">AAA</button>
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn status-btn" data-status="can" onclick="toggleStatus('can')">
+          <span class="filter-dot green"></span>Volledig (9)
+        </button>
+        <button class="filter-btn status-btn" data-status="partial" onclick="toggleStatus('partial')">
+          <span class="filter-dot yellow"></span>Gedeeltelijk (25)
+        </button>
+        <button class="filter-btn status-btn" data-status="cannot" onclick="toggleStatus('cannot')">
+          <span class="filter-dot red"></span>Menselijk (52)
+        </button>
+      </div>
     </div>
 
     <!-- Criteria by principle -->
@@ -1016,8 +981,8 @@
     ];
 
     // ── State ──
-    let currentStatusFilter = "all";
-    let currentLevelFilter = "all";
+    const activeStatuses = new Set(); // empty = toon alles
+    const activeLevels   = new Set(); // empty = toon alles
     let currentSearchTerm = "";
 
     // ── Render ──
@@ -1030,8 +995,8 @@
 
       principles.forEach(principle => {
         const filtered = principle.criteria.filter(c => {
-          if (currentStatusFilter !== "all" && c.status !== currentStatusFilter) return false;
-          if (currentLevelFilter !== "all" && c.level !== currentLevelFilter) return false;
+          if (activeStatuses.size > 0 && !activeStatuses.has(c.status)) return false;
+          if (activeLevels.size   > 0 && !activeLevels.has(c.level))   return false;
           if (search) {
             const haystack = (c.id + " " + c.name + " " + c.desc).toLowerCase();
             if (!haystack.includes(search)) return false;
@@ -1093,17 +1058,27 @@
       }
     }
 
-    function filterCriteria(filter) {
-      currentStatusFilter = filter;
-      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
+    function toggleStatus(status) {
+      if (activeStatuses.has(status)) {
+        activeStatuses.delete(status);
+      } else {
+        activeStatuses.add(status);
+      }
+      document.querySelectorAll(".status-btn").forEach(btn => {
+        btn.classList.toggle("active", activeStatuses.has(btn.dataset.status));
+      });
       render();
     }
 
-    function filterLevel(level) {
-      currentLevelFilter = level;
-      document.querySelectorAll(".level-btn").forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
+    function toggleLevel(level) {
+      if (activeLevels.has(level)) {
+        activeLevels.delete(level);
+      } else {
+        activeLevels.add(level);
+      }
+      document.querySelectorAll(".level-btn").forEach(btn => {
+        btn.classList.toggle("active", activeLevels.has(btn.dataset.level));
+      });
       render();
     }
 
