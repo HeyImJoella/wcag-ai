@@ -492,6 +492,91 @@
       pointer-events: none;
     }
 
+    /* ── Evaluation panel ── */
+    .criterion-eval {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-sm);
+      padding-top: var(--spacing-sm);
+      border-top: var(--border-width-sm) solid var(--border-neutral-1);
+    }
+
+    .eval-check-label {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2xs);
+      font-size: var(--body-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--content-1);
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+      padding-top: 3px;
+    }
+
+    .eval-checkbox {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--color-green-500, #3d8b5c);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .eval-notes {
+      flex: 1;
+      font-family: var(--font-family-body);
+      font-size: var(--body-size-sm);
+      color: var(--content-base);
+      background: var(--surface-neutral-1);
+      border: var(--border-width-sm) solid var(--border-neutral-2);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-2xs) var(--spacing-sm);
+      resize: vertical;
+      min-height: 56px;
+      line-height: var(--font-body-sm-line-height);
+      transition: border-color 0.15s;
+    }
+
+    .eval-notes:focus {
+      outline: none;
+      border-color: var(--border-neutral-3);
+      background: var(--surface-neutral-base);
+    }
+
+    .eval-notes::placeholder { color: var(--content-2); }
+
+    /* Badges on the collapsed criterion row */
+    .eval-done-badge {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: var(--radius-circular);
+      background: var(--color-green-100, #d6f0e4);
+      color: var(--color-green-600, #276344);
+      flex-shrink: 0;
+    }
+
+    .criterion.evaluated .eval-done-badge { display: flex; }
+
+    .eval-notes-dot {
+      display: none;
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-circular);
+      background: var(--color-brand-400);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .criterion.has-notes .eval-notes-dot { display: block; }
+
+    @media (max-width: 600px) {
+      .criterion-eval { flex-direction: column; gap: var(--spacing-sm); }
+    }
+
     /* ── Deep link highlight ── */
     .criterion.highlighted {
       animation: highlight-fade 2s ease-out;
@@ -980,6 +1065,20 @@
       }
     ];
 
+    // ── Evaluation storage ──
+    const EVAL_KEY = "wcag-eval";
+    let evalData = {};
+    try { evalData = JSON.parse(localStorage.getItem(EVAL_KEY) || "{}"); } catch(e) {}
+
+    function saveEval(id) {
+      localStorage.setItem(EVAL_KEY, JSON.stringify(evalData));
+      const li = document.getElementById("sc-" + id);
+      if (li) {
+        li.classList.toggle("evaluated", !!evalData[id]?.checked);
+        li.classList.toggle("has-notes",  !!(evalData[id]?.notes?.trim()));
+      }
+    }
+
     // ── State ──
     const activeStatuses = new Set(); // empty = toon alles
     const activeLevels   = new Set(); // empty = toon alles
@@ -1020,9 +1119,13 @@
 
         const list = section.querySelector(".criteria-list");
         filtered.forEach(c => {
+          const ev = evalData[c.id] || {};
           const li = document.createElement("li");
           li.className = "criterion";
           li.id = "sc-" + c.id;
+          if (ev.checked)       li.classList.add("evaluated");
+          if (ev.notes?.trim()) li.classList.add("has-notes");
+
           li.innerHTML = `
             <span class="criterion-status ${c.status}"></span>
             <div class="criterion-content">
@@ -1030,10 +1133,23 @@
                 <span class="criterion-id">${c.id}</span>
                 <span class="criterion-name">${c.name}</span>
                 <span class="criterion-level">${c.level}</span>
+                <span class="eval-done-badge" title="Geëvalueerd">
+                  <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </span>
+                <span class="eval-notes-dot" title="Heeft opmerkingen"></span>
               </div>
               <div class="criterion-detail">
                 <div class="criterion-detail-inner">
                   <div class="criterion-desc">${c.desc}</div>
+                  <div class="criterion-eval">
+                    <label class="eval-check-label">
+                      <input type="checkbox" class="eval-checkbox" ${ev.checked ? "checked" : ""}>
+                      <span>Geëvalueerd</span>
+                    </label>
+                    <textarea class="eval-notes" placeholder="Voeg een opmerking toe…" rows="2">${ev.notes ? ev.notes.replace(/</g,"&lt;") : ""}</textarea>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1041,6 +1157,32 @@
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
             </svg>
           `;
+
+          // Stop propagation so clicking eval elements doesn't toggle open/close
+          li.querySelector(".criterion-eval").addEventListener("click", e => e.stopPropagation());
+
+          // Checkbox
+          const checkbox = li.querySelector(".eval-checkbox");
+          checkbox.addEventListener("change", e => {
+            e.stopPropagation();
+            if (!evalData[c.id]) evalData[c.id] = {};
+            evalData[c.id].checked = checkbox.checked;
+            saveEval(c.id);
+          });
+
+          // Notes with debounce
+          const textarea = li.querySelector(".eval-notes");
+          let notesTimeout;
+          textarea.addEventListener("input", e => {
+            e.stopPropagation();
+            clearTimeout(notesTimeout);
+            notesTimeout = setTimeout(() => {
+              if (!evalData[c.id]) evalData[c.id] = {};
+              evalData[c.id].notes = textarea.value;
+              saveEval(c.id);
+            }, 400);
+          });
+
           li.addEventListener("click", (e) => {
             li.classList.toggle("open");
             if (li.classList.contains("open")) {
